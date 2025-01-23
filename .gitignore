@@ -1,0 +1,18 @@
+# Ignorar node_modules
+node_modules/
+
+# Ignorar archivos de configuración de la IDE
+.idea/
+.vscode/
+
+# Ignorar archivos de log
+*.log
+
+# Ignorar archivos del sistema operativo (por ejemplo, MacOS)
+.DS_Store
+
+# Ignorar archivos de dependencias de npm
+package-lock.json
+
+# Ignorar variables de entorno
+.env
