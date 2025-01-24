@@ -21,6 +21,9 @@ app.use(cors(corsOptions));
 // Conectar a la Base de Datos
 connectDB();
 
+// Rutas
+app.use('/api/rooms', require('./routes/room'));
+
 // Ruta básica
 app.get('/', (req, res) => {
     res.send('Servidor rooms_service corriendo');
