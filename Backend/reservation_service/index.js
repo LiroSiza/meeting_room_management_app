@@ -21,6 +21,9 @@ app.use(cors(corsOptions));
 // Conectar a la Base de Datos
 connectDB();
 
+// Rutas
+app.use('/api/reservation', require('./routes/reservation'));
+
 // Ruta básica
 app.get('/', (req, res) => {
     res.send('Servidor reservation_service corriendo');

@@ -23,7 +23,7 @@ exports.showOneRoom = async (req, res) => {
         }
 
         res.json(room);
-        console.log(room);
+        
     } catch (error) {
         console.log(error);
         res.status(500).send('Error');
@@ -58,7 +58,7 @@ exports.deleteRoom = async (req, res) => {
 
         // Accion para borrar en la DB usando su id
         await Room.findByIdAndDelete(req.params.id);
-        res.json({ msg: 'Sala eliminado con exito' });
+        res.json({ msg: 'Sala eliminada con exito' });
 
     } catch (error) {
         console.log(error);
