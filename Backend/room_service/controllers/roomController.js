@@ -23,7 +23,7 @@ exports.showOneRoom = async (req, res) => {
         }
 
         res.json(room);
-        console.log(room);
+        
     } catch (error) {
         console.log(error);
         res.status(500).send('Error');
@@ -48,7 +48,7 @@ exports.createRoom = async (req, res) => {
 }
 
 // Borrar una sala
-exports.deleteRoom = async (req, res) => {
+exports.deleteReservation = async (req, res) => {
     try {
         let room = await Room.findById(req.params.id);
 
