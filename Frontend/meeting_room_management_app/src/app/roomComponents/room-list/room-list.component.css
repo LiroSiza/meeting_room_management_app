@@ -1,0 +1,87 @@
+.title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  .error {
+    color: #d32f2f;
+    text-align: center;
+    margin: 1rem 0;
+  }
+  
+  .room-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+  }
+  
+  .room-item {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .room-info {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
+  }
+  
+  .room-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .edit-btn {
+    background-color: #42a5f5;
+    color: #fff;
+  }
+  
+  .edit-btn:hover {
+    background-color: #1e88e5;
+  }
+  
+  .delete-btn {
+    background-color: #ef5350;
+    color: #fff;
+  }
+  
+  .delete-btn:hover {
+    background-color: #d32f2f;
+  }
+  
+  .no-rooms {
+    text-align: center;
+    color: #777;
+    font-style: italic;
+    margin-top: 1rem;
+  }
+  
+  .span-info-txt{
+    width: 160px;
+  }
+
+  .span-info-num{
+    width: 100px;
+    text-align: center;
+  }
+
+  .center-txt{
+    text-align: center;
+  }
