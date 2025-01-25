@@ -1,0 +1,45 @@
+<h1 class="title no-select">Lista de Reservaciones</h1>
+
+<div *ngIf="error" class="error">
+  {{ error }}
+</div>
+
+<div  class="no-select">
+  <ul class="room-list">
+    <li class="room-item">
+      <div class="room-info">
+        <span class="span-info-txt center-txt">Sala</span>
+        <span class="span-info-num center-txt">Capacidad</span>
+        <span class="span-info-txt center-txt">Usuario</span>
+        <span class="span-info-txt center-txt">Fecha</span>
+        <span class="span-info-txt center-txt">Hora</span>
+        <span class="span-info-txt center-txt">Estado</span>
+      </div>
+      <div class="room-actions center-txt">
+        <span class="center-txt">Opciones</span>
+      </div>
+    </li>
+  </ul>
+  <ul *ngIf="!error && reservations.length > 0" class="room-list">
+    <li *ngFor="let reservation of reservations" class="room-item" [ngClass]="{'inactive': reservation.estado === 'inactivo'}">
+      <div class="room-info">
+        <span class="span-info-txt">{{ reservation.nombreSala }}</span>
+        <span class="span-info-num">{{ reservation.capacidad }}</span>
+        <span class="span-info-txt">{{ reservation.usuario }}</span>
+        <span class="span-info-txt center-txt">{{ reservation.fechaInicio | date: 'EEE d MMM' }}</span>
+        <span class="span-info-txt center-txt">{{ reservation.fechaInicio | date: 'hh:mm a' }} - {{ reservation.fechaFin | date: 'hh:mm a' }}</span>
+        <span class="span-info-txt center-txt">
+          <span
+            class="status-dot"
+            [ngClass]="{'active': reservation.estado === 'activo', 'inactive': reservation.estado === 'inactivo'}"
+          ></span>
+          {{ reservation.estado }}
+        </span>
+      </div>
+      <div class="room-actions center-txt">
+        <button (click)="deleteReservation(reservation._id)" class="btn delete-btn">Borrar</button>
+      </div>
+    </li>
+  </ul>
+</div>
+<p *ngIf="!error && reservations.length === 0" class="no-rooms">No hay reservaciones disponibles.</p>

@@ -1,5 +1,5 @@
-
 const Reservation= require("../models/Reservation");
+const { emitReservationsUpdate } = require('../utils/socketUtils');
 
 // METODOS QUE SE COMUNICAN CON LA DB
 
@@ -7,10 +7,10 @@ const Reservation= require("../models/Reservation");
 exports.showReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find();
-        res.json(reservations);
+        return res.json(reservations);
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).send({ error: 'Error al obtener las reservaciones' });
     }
 }
 
@@ -20,14 +20,14 @@ exports.showOneReservation = async (req, res) => {
         let reservation = await Reservation.findById(req.params.id);
 
         if(!reservation){  // En caso de que no exista la reservacion
-            res.status(404).json({ msg: 'Reservacion no encontrada' })
+            return res.status(404).json({ msg: 'Reservacion no encontrada' })
         }
 
-        res.json(reservation);
+        return res.json(reservation);
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).send({ error: 'Error al obtener la reservacion' });
     }
 }
 
@@ -36,10 +36,15 @@ exports.createReservation = async (req, res) => {
     try {
         let reservation = new Reservation(req.body);
         await reservation.save();
-        res.json(reservation);
+
+        // Emite las actualizaciones
+        const io = req.app.get('socketio');
+        await emitReservationsUpdate(io);
+
+        return res.json(reservation);
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).send({ error: 'Error al crear la reservacion' });
     }
 }
 
@@ -49,26 +54,32 @@ exports.deleteReservation = async (req, res) => {
         let reservation = await Reservation.findById(req.params.id);
 
         if(!reservation){  // En caso de que no exista la reservacion
-            res.status(404).json({ msg: 'Reservacion no encontrada' })
+            return res.status(404).json({ msg: 'Reservacion no encontrada' })
         }
 
         // Accion para borrar en la DB usando su id
         await Reservation.findByIdAndDelete(req.params.id);
-        res.json({ msg: 'Sala eliminado con exito' });
+
+        // Emite las actualizaciones
+        const io = req.app.get('socketio');
+        await emitReservationsUpdate(io);
+
+        return res.json({ msg: 'Reservacion eliminada con exito' });
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).send({ error: 'Error al eliminar la reservacion' });
     }
 }
 
+// Actualizar una reservacion
 exports.updateReservation = async (req, res) => {
     try {
         let { idSala, usuario, fechaInicio, fechaFin, estado } = req.body; // reestructuracion para obtener los parametros enviados en el body
         let reservation = await Reservation.findById(req.params.id);  // Obtener los parametros enviados en la url
 
         if(!reservation){  // En caso de que no exista la reservacion
-            res.status(404).json({ msg: 'Reservacion no encontrada' });
+            return res.status(404).json({ msg: 'Reservacion no encontrada' });
         }
 
         // Actualizar usando los nuevos valores
@@ -80,11 +91,15 @@ exports.updateReservation = async (req, res) => {
 
         // Se busca la sala mediante su id y se le pasa el objeto con los nuevos valores
         reservation = await Reservation.findOneAndUpdate({ _id: req.params.id}, reservation, { new: true })
+
+        // Emite las actualizaciones
+        const io = req.app.get('socketio');
+        await emitReservationsUpdate(io);
         
         // Mensaje al usuario
-        res.json(reservation);
+        return res.json(reservation);
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).send({ error: 'Error al actualizar la reservacion' });
     }
 }

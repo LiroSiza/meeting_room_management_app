@@ -5,7 +5,8 @@ const mongoose = require('mongoose');
 // El esquema describe cómo deben estructurarse los documentos en esta colección.
 const ReservationSchema = mongoose.Schema({
     idSala: {
-        type: Number,
+        type: mongoose.Schema.Types.ObjectId, // Define que idSala es un ObjectId
+        ref: 'Room', // Referencia al modelo de sala
         required: true
     },
     usuario: {
@@ -13,11 +14,11 @@ const ReservationSchema = mongoose.Schema({
         required: true 
     },
     fechaInicio: {
-        type: String,
+        type: Date,
         required: true 
     },
     fechaFin: {
-        type: String,
+        type: Date,
         required: true 
     },
     estado: {
