@@ -1,4 +1,5 @@
 const Room = require("../models/Room");
+const { emitRoomsUpdate } = require('../utils/socketUtils');
 
 // METODOS QUE SE COMUNICAN CON LA DB
 
@@ -6,10 +7,10 @@ const Room = require("../models/Room");
 exports.showRooms = async (req, res) => {
     try {
         const room = await Room.find();
-        res.json(room);
+        return res.json(room);
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).json({ error: 'Error al obtener las salas' });
     }
 }
 
@@ -19,14 +20,14 @@ exports.showOneRoom = async (req, res) => {
         let room = await Room.findById(req.params.id );
 
         if(!room){  // En caso de que no exista la sala
-            res.status(404).json({ msg: 'No existe la sala' });
+            return res.status(404).json({ msg: 'No existe la sala' });
         }
 
-        res.json(room);
+        return res.json(room);
         
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).json({ error: 'Error al obtener la sala' });
     }
 }
 
@@ -40,10 +41,15 @@ exports.createRoom = async (req, res) => {
 
         // Se guarda la sala en la base de datos
         await room.save();
-        res.send(room);
+
+        // Emite las actualizaciones
+        const io = req.app.get('socketio');
+        await emitRoomsUpdate(io);
+
+        return res.send(room);
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).json({ error: 'Error al crear la sala' });
     }
 }
 
@@ -53,16 +59,21 @@ exports.deleteRoom = async (req, res) => {
         let room = await Room.findById(req.params.id);
 
         if(!room){  // En caso de que no exista la sala
-            res.status(404).json({ msg: 'No existe la sala' });
+            return res.status(404).json({ msg: 'No existe la sala' });
         }
 
         // Accion para borrar en la DB usando su id
         await Room.findByIdAndDelete(req.params.id);
-        res.json({ msg: 'Sala eliminada con exito' });
+
+        // Emitir actualizaciones
+        const io = req.app.get('socketio');
+        await emitRoomsUpdate(io);
+
+        return res.json({ msg: 'Sala eliminada con exito' });
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).json({ error: 'Error al eliminar la sala' });
     }
 }
 
@@ -73,7 +84,7 @@ exports.updateRoom = async (req, res) => {
         let room = await Room.findById(req.params.id);  // Obtener los parametros enviados en la url
 
         if(!room){  // En caso de que no exista la sala
-            res.status(404).json({ msg: 'No existe la sala' });
+            return res.status(404).json({ msg: 'No existe la sala' });
         }
 
         // Actualizar usando los nuevos valores
@@ -84,11 +95,15 @@ exports.updateRoom = async (req, res) => {
         // Se busca la sala mediante su id y se le pasa el objeto con los nuevos valores
         room = await Room.findOneAndUpdate({ _id: req.params.id}, room, { new: true })
 
+        // Emitir actualizaciones
+        const io = req.app.get('socketio');
+        await emitRoomsUpdate(io);
+
         // Mensaje al usuario
-        res.json(room);
+        return res.json(room);
 
     } catch (error) {
         console.log(error);
-        res.status(500).send('Error');
+        return res.status(500).json({ error: 'Error al eliminar la sala' });
     }
 }
