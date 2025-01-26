@@ -8,5 +8,6 @@ router.get('/:id', reservationController.showOneReservation);
 router.post('/', reservationController.createReservation);
 router.put('/:id', reservationController.updateReservation);
 router.delete('/:id', reservationController.deleteReservation);
+router.put('/deactivate/:roomId', reservationController.deactivateReservation);
 
 module.exports = router;

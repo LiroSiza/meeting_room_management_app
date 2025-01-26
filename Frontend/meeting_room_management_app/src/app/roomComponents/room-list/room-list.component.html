@@ -1,4 +1,6 @@
 <h1 class="title">Lista de Salas</h1>
+<div class="add-button"><button (click)="popupForm.openModal()">Agregar Sala</button></div>
+<app-room-creation-form #popupForm></app-room-creation-form>
 
 <div *ngIf="error" class="error">
   {{ error }}
@@ -8,12 +10,12 @@
   
   <ul class="room-list">
     <li class="room-item">
-      <div class="room-info">
+      <div class="room-info room-info-ti">
         <span class="span-info-txt center-txt">Nombre</span>
         <span class="span-info-num center-txt">Capacidad</span>
         <span class="span-info-txt center-txt">Estado</span>
       </div>
-      <div class="room-actions center-txt">
+      <div class="room-actions center-txt room-info-ti">
         <span class="span-info-txt center-txt">Opciones</span>
       </div>
     </li>
@@ -26,10 +28,12 @@
         <span class="span-info-txt center-txt">{{ room.estado }}</span>
       </div>
       <div class="room-actions center-txt">
-        <button (click)="editRoom(room._id)" class="btn edit-btn">Editar</button>
-        <button (click)="deleteRoom(room._id)" class="btn delete-btn">Borrar</button>
+        <button (click)="editRoom(room._id)" class="btn edit-btn" [disabled]="room.estado === 'ocupada'" [ngClass]="{'btn-disabled': room.estado === 'ocupada'}">Editar</button>
+        <button (click)="deleteRoom(room._id)" class="btn delete-btn" [disabled]="room.estado === 'ocupada'" [ngClass]="{'btn-disabled': room.estado === 'ocupada'}">Borrar</button>
       </div>
     </li>
   </ul>
 </div>
 <p *ngIf="!error && rooms.length === 0" class="no-rooms">No hay salas disponibles.</p>
+
+<app-room-update-form #roomUpdateForm></app-room-update-form>

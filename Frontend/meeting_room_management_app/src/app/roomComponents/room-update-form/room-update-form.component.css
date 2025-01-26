@@ -1,0 +1,111 @@
+*{
+  user-select: none;
+}
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 999;
+    font-family: Sarabun, sans-serif;
+  }
+  
+  .modal.open {
+    display: block;
+  }
+  
+  .modal .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .btnS{
+    display: flex;
+    justify-content: center;
+  }
+
+  .btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .btn-submit {
+    background-color:  rgb(180, 144, 3);
+    color: #fff;
+  }
+  
+  .btn-submit:hover {
+    background-color: rgb(129, 104, 2);
+  }
+  
+  input, select {
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+
+  input{
+    width: 92.5%;
+    margin-top: 0.4rem;
+  }
+
+  label{
+    font-weight: bold;
+  }
+  
+  input:focus, select:focus {
+    outline: none;
+  }
+
+  .error {
+    color: #d32f2f;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  
+  .general-error {
+    color: red;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    text-align: center;
+  }
+  
+  .input-container {
+    margin-bottom: 10px; /* Espaciado entre los inputs */
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.875em;
+  }
+  
+  .btnS {
+    text-align: center;
+  }
+  .swal2-container {
+    z-index: 9999 !important; /* Se asegura que el SweetAlert esté encima */
+  }

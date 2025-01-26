@@ -47,6 +47,26 @@ export class RoomService {
     });
   }
 
+  // Creacion de salas
+  createRoom(room: Room): Observable<Room> {
+    return this.http.post<Room>(this.urlAPI, room).pipe(
+      catchError((error) => {
+        console.error('Error al crear la sala:', error);
+        return throwError(() => new Error('No se pudo crear la sala.'));
+      })
+    );
+  } 
+
+  // Actualizar sala
+  updateRoom(room: Room): Observable<Room> {
+    return this.http.put<Room>(`${this.urlAPI}/${room.id}`, room).pipe(
+      catchError((error) => {
+        console.error('Error al actualizar la sala:', error);
+        return throwError(() => new Error('No se pudo actualizar la sala. Inténtalo más tarde.'));
+      })
+    );
+  }  
+
   // Método para eliminar una sala por ID
   deleteRoom(roomId: string): Observable<any> {
     // Verificar si la sala existe

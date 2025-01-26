@@ -1,5 +1,14 @@
+*{
+  user-select: none;
+}
 .title {
-    font-size: 1.5rem;
+    font-size: 2rem; 
+    color: #333;
+    font-weight: bold;
+    font-family: Sarabun, sans-serif;
+    text-transform: uppercase; 
+    letter-spacing: 1px; 
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); 
     text-align: center;
     margin-bottom: 1rem;
     color: #333;
@@ -14,7 +23,7 @@
     list-style: none;
     padding: 0;
     margin: 0 auto;
-    max-width: 600px;
+    max-width: 590px;
   }
   
   .room-item {
@@ -33,6 +42,11 @@
     flex-direction: row;
     gap: 0.2rem;
   }
+
+  .room-info-ti{
+    font-weight:bold;
+    font-family: Sarabun, sans-serif;
+  }
   
   .room-actions {
     display: flex;
@@ -46,6 +60,11 @@
     cursor: pointer;
     font-size: 0.9rem;
     transition: background-color 0.2s ease;
+  }
+
+  .btn[disabled] {
+    opacity: 0.5;
+    cursor:default;
   }
   
   .edit-btn {
@@ -84,4 +103,31 @@
 
   .center-txt{
     text-align: center;
+  }
+  .add-button{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .add-button button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background-color: rgb(209, 168, 3);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  .add-button button:hover {
+    background-color: rgb(180, 144, 3);
+    transform: translateY(-2px);
+  }
+  
+  .add-button button:active {
+    transform: translateY(0);
   }
