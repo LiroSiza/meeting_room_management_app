@@ -103,3 +103,25 @@ exports.updateReservation = async (req, res) => {
         return res.status(500).send({ error: 'Error al actualizar la reservacion' });
     }
 }
+
+// Desactivar las reservas mediante un id de sala
+exports.deactivateReservation = async (req, res) => {
+    const roomId = req.params.roomId; // Obtener el id de la sala desde el parámetro
+
+    try {
+      // Actualizar todas las reservaciones de la sala a estado "inactivo"
+      const result = await Reservation.updateMany(
+        { idSala: roomId },
+        { $set: { estado: 'inactivo' } }
+      );
+  
+      if (result.modifiedCount === 0) {
+        return res.status(200).json({ message: 'No se encontraron reservaciones para desactivar.' });
+      }
+  
+      return res.status(200).json({ message: `Reservaciones desactivadas para la sala con ID: ${roomId}` });
+    } catch (error) {
+      console.error('Error al desactivar reservaciones:', error);
+      return res.status(500).json({ message: 'Hubo un problema al desactivar las reservaciones.' });
+    }
+}

@@ -1,0 +1,32 @@
+<!-- Popup Modal -->
+<div class="popup-overlay" *ngIf="isModalOpen">
+    <div class="popup-container">
+      <h2>Crear Nueva Sala</h2>
+  
+      <form (ngSubmit)="onSubmit()" #roomForm="ngForm">
+        <div class="form-group">
+          <label for="nombre">Nombre de la Sala</label>
+          <input type="text" id="nombre" name="nombre" [(ngModel)]="room.nombre" required/>
+        </div>
+  
+        <div class="form-group">
+          <label for="estado">Estado</label>
+          <select id="estado" name="estado" [(ngModel)]="room.estado" required>
+            <option value="disponible">Disponible</option>
+            <option value="mantenimiento">Mantenimiento</option>
+          </select>
+        </div>
+  
+        <div class="form-group">
+          <label for="capacidad">Capacidad (5-20)</label>
+          <input type="number" id="capacidad" name="capacidad" [(ngModel)]="room.capacidad" required min="5" max="20"/>
+        </div>
+  
+        <div class="form-buttons">
+          <button type="submit" [disabled]="!roomForm.form.valid">Crear Sala</button>
+          <button type="button" (click)="closeModal()">Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

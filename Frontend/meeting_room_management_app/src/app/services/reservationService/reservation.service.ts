@@ -95,6 +95,25 @@ export class ReservationService {
     );
   }
 
+  // Desactivar las reservaciones asociadas a una sala
+  deactivateReservations(roomId: string): Observable<any> {
+    if (!roomId) {
+      console.error('Error: El ID de la sala no está definido.');
+      return throwError(() => new Error('El ID de la sala no está definido.'));
+    }
+
+    const url = `${this.urlAPI}/deactivate/${roomId}`;
+    console.log('URL para desactivar reservaciones:', url);
+
+    return this.http.put(url, {}).pipe(
+      catchError((error) => {
+        console.error('Error al desactivar las reservaciones:', error);
+        return throwError(() => new Error('Error al desactivar las reservaciones.'));
+      })
+    );
+  }
+
+
 
   private convertToMexicoTime(date: Date): Date {
     const mexicoTimezone = 'America/Mexico_City'; // Zona horaria de México

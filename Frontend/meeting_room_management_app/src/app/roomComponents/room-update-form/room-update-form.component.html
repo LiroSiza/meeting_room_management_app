@@ -1,0 +1,45 @@
+<div *ngIf="isModalOpen" class="modal open">
+    <div class="modal-content">
+      <button (click)="closeModal()" class="close-btn">&times;</button>
+      <h2 class="title">Actualizar Sala</h2>
+  
+      <form (ngSubmit)="onSubmit()" #roomForm="ngForm">
+        <div>
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" [(ngModel)]="room.nombre" name="nombre" required #nombre="ngModel" />
+          <div *ngIf="nombre.invalid && nombre.touched" class="error">
+            <div *ngIf="nombre.errors?.['required']">El nombre es obligatorio.</div>
+          </div>
+        </div>
+      
+        <div>
+          <label for="capacidad">Capacidad (5-20):</label>
+          <input type="number" id="capacidad" [(ngModel)]="room.capacidad" name="capacidad" required min="5" max="20" #capacidad="ngModel"/>
+          <div *ngIf="capacidad.invalid && capacidad.touched" class="error">
+            <div *ngIf="capacidad.errors?.['required']">La capacidad es obligatoria.</div>
+            <div *ngIf="capacidad.errors?.['min']">La capacidad mínima es 5.</div>
+            <div *ngIf="capacidad.errors?.['max']">La capacidad máxima es 20.</div>
+          </div>
+        </div>
+      
+        <div>
+          <label for="estado">Estado:</label>
+          <select id="estado" [(ngModel)]="room.estado" name="estado" required #estado="ngModel">
+            <option value="disponible">Disponible</option>
+            <option value="mantenimiento">Mantenimiento</option>
+          </select>
+          <div *ngIf="estado.invalid && estado.touched" class="error">
+            <div *ngIf="estado.errors?.['required']">El estado es obligatorio.</div>
+          </div>
+        </div>
+      
+        <div class="btnS">
+          <button type="submit" class="btn btn-submit" [disabled]="roomForm.invalid">Guardar</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+
+  
+  
