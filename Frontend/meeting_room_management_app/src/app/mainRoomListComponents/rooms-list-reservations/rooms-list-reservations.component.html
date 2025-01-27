@@ -1,0 +1,10 @@
+<div class="room-grid">
+  <div class="room-card" (click)="openRoomDetails(room._id)" *ngFor="let room of rooms" [ngStyle]="{ 'background-color': getBackgroundColor(room.estado) }">
+    <h3 class="room-name">{{ room.nombre }}</h3>
+    <p class="room-capacity">Capacidad: {{ room.capacidad }}</p>
+    <p class="room-status" [attr.data-status]="room.estado">{{ room.estado | titlecase }}</p>
+  </div>
+</div>
+<div *ngIf="selectedRoomId" class="popup">
+  <app-room-details [roomId]="selectedRoomId" (onClose)="closeRoomDetails()"></app-room-details>
+</div>

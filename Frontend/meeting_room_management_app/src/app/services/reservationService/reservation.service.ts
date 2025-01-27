@@ -29,6 +29,18 @@ export class ReservationService {
     );
   }
 
+  // Método para obtener la reservación activa por el ID de la sala
+  getActiveReservationByRoomId(idSala: string): Observable<Reservation> {
+    const url = `${this.urlAPI}/active/${idSala}`
+    return this.http.get<Reservation>(url).pipe(
+      catchError((error) => {
+        console.error('Error al obtener la reservación activa:', error);
+        return throwError(() => new Error('Error al obtener la reservación activa.'));
+      })
+    );
+  }
+  
+
   // Método para obtener una reservacion por su ID
     getReservationById(reservationId: string): Observable<Reservation> {
       return this.http.get<Reservation>(`${this.urlAPI}/${reservationId}`).pipe(
@@ -103,7 +115,7 @@ export class ReservationService {
     }
 
     const url = `${this.urlAPI}/deactivate/${roomId}`;
-    console.log('URL para desactivar reservaciones:', url);
+    //console.log('URL para desactivar reservaciones:', url);
 
     return this.http.put(url, {}).pipe(
       catchError((error) => {
