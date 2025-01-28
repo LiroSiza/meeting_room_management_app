@@ -67,6 +67,17 @@ export class RoomService {
     );
   }  
 
+  // Método para actualizar el estado de una sala en la base de datos
+  updateRoomStatus(roomId: string, newStatus: string): Observable<any> {
+    const url = `${this.urlAPI}/${roomId}`;
+    return this.http.put(url, { estado: newStatus }).pipe(
+      catchError((error) => {
+        console.error('Error al actualizar el estado de la sala:', error);
+        return throwError(() => new Error('Error al actualizar el estado de la sala.'));
+      })
+    );
+  }
+
   // Método para eliminar una sala por ID
   deleteRoom(roomId: string): Observable<any> {
     // Verificar si la sala existe
