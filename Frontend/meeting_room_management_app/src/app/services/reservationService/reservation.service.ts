@@ -34,7 +34,7 @@ export class ReservationService {
         this.updateRoomStates();  // Actualiza el estado de las salas
         //console.log("Actualizado", reservations);
       });
-    }, 6000);  // Actualiza despues de un tiempo
+    }, 6000);  // Actualiza 
   }
 
   // Método para actualizar el estado de las salas
@@ -164,6 +164,20 @@ export class ReservationService {
     );
   }
 
+   // Método para crear una nueva reservación
+   createReservation(reservation: Reservation): Observable<Reservation> {
+    return this.http.post<Reservation>(this.urlAPI, reservation).pipe(
+      catchError((error) => {
+        console.error('Error al crear la reservación:', error);
+        return throwError(() => new Error('No se pudo crear la reservación. Inténtalo más tarde.'));
+      })
+    );
+  }
+
+  // Método para actualizar una reservación
+  updateReservation(id: string, updatedReservation: Reservation): Observable<Reservation> {
+    return this.http.put<Reservation>(`${this.urlAPI}/${id}`, updatedReservation);
+  }
 
 
   private convertToMexicoTime(date: Date): Date {

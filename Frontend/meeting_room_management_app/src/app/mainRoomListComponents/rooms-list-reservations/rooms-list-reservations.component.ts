@@ -46,47 +46,75 @@ export class RoomsListReservationsComponent implements OnInit {
 
   private startAutoCheckReservations(): void {
     this.intervalId = setInterval(() => {
-      // Verificar las reservaciones activas cada minuto
+      // Verificar las reservaciones activas
       this.reservationService.getReservations().subscribe((reservations) => {
         this.updateRoomStates(reservations);  // Actualiza los estados de las salas
       });
-    }, 60000);  // Verificar cada 1 minuto (60000 ms)
+    }, 600);  // Verificar
   }
 
   private updateRoomStates(reservations: Reservation[]): void {
-    const currentDate = new Date();  // Obtener la fecha actual
+    const currentDate = new Date(); // Obtener la fecha actual
+  
+    // Crear un conjunto de IDs de salas con reservas activas
+    const activeRoomIds = new Set(
+      reservations.filter(reservation => reservation.estado === 'activo').map(reservation => reservation.idSala)
+    );
+  
+    // Iterar sobre todas las salas para actualizar sus estados
+    this.rooms.forEach(room => {
+      if (!room._id) {
+        console.warn(`La sala "${room.nombre}" no tiene un ID válido.`);
+        return; // Saltar a la siguiente sala si _id es undefined
+      }
+  
+      if (activeRoomIds.has(room._id)) {
+        // Si la sala tiene una reserva activa, verificar su estado
+        const activeReservation = reservations.find(
+          reservation => reservation.idSala === room._id && reservation.estado === 'activo'
+        );
+        if (activeReservation) {
+          const reservationStart = new Date(activeReservation.fechaInicio);
+          const reservationEnd = new Date(activeReservation.fechaFin);
 
-    reservations.forEach(reservation => {
-      if (reservation.estado === 'activo') {
-        const reservationEnd = new Date(reservation.fechaFin);
-
-        // Si la fecha actual es posterior a la fecha de fin de la reserva, desocupar la sala
-        if (currentDate > reservationEnd) {
-          const room = this.rooms.find(r => r._id === reservation.idSala);
-          if (room) {
-            room.estado = 'disponible';  // Cambiar el estado de la sala a 'disponible'
-            
-            // Llamar al servicio para actualizar el estado de la sala en la base de datos
-            if (room && room._id) {  // Verifica si 'room' y '_id' son válidos
-              this.roomService.updateRoomStatus(room._id, 'disponible').subscribe({
-                next: (response) => {
-                  console.log(`Estado de la sala ${room.nombre} actualizado a 'disponible'`);
-                },
-                error: (error) => {
-                  console.error(`Error al actualizar el estado de la sala ${room.nombre}:`, error);
-                }
-              });
-            }            
+          if (currentDate > reservationEnd) {
+            // La reserva ha expirado, marcar la sala como disponible
+            room.estado = 'disponible';
+            this.updateRoomStatus(room._id, 'disponible');
+          } else if (currentDate >= reservationStart && currentDate < reservationEnd) {
+            // La reserva sigue activa, marcar la sala como ocupada
+            room.estado = 'ocupada';
+            this.updateRoomStatus(room._id, 'ocupada');
           }
-        } else {
-          const room = this.rooms.find(r => r._id === reservation.idSala);
-          if (room) {
-            room.estado = 'ocupada';  // Cambiar el estado a 'ocupada' si la reserva está activa
-          }
+        }
+      } else {
+        // Si la sala no tiene reservas activas, marcarla como disponible
+        if (room.estado !== 'mantenimiento') { // Mantener las salas en mantenimiento si ya están así
+          room.estado = 'disponible';
+          this.updateRoomStatus(room._id, 'disponible');
         }
       }
     });
   }
+  
+  // Método auxiliar para actualizar el estado de una sala en el backend
+  private updateRoomStatus(roomId: string, status: string): void {
+    if (!roomId) {
+      console.error('No se puede actualizar el estado de la sala: el ID es inválido.');
+      return;
+    }
+  
+    this.roomService.updateRoomStatus(roomId, status).subscribe({
+      next: () => {
+        //console.log(`Estado de la sala ${roomId} actualizado a ${status}`);
+      },
+      error: (error) => {
+        console.error(`Error al actualizar el estado de la sala ${roomId}:`, error);
+      }
+    });
+  }
+  
+  
 
   openRoomDetails(roomId: string | undefined): void {
     if (!roomId) {

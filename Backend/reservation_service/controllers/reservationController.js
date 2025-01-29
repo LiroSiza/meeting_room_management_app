@@ -129,21 +129,26 @@ exports.deactivateReservation = async (req, res) => {
 // Obtener la reservación activa por ID de sala
 exports.getActiveReservationByRoomId = async (req, res) => {
     const roomId = req.params.idSala;
+    const now = new Date();  // Fecha actual para comparación
   
     try {
-      const activeReservation = await Reservation.findOne({
-        idSala: roomId,
-        estado: 'activo', // Considera el estado específico para las reservaciones activas
-      });
+        const activeReservation = await Reservation.findOne({
+            idSala: roomId,
+            estado: 'activo', // Considera el estado específico para las reservaciones activas
+            fechaInicio: { $lte: now }, // La fecha de inicio debe ser menor o igual a la fecha actual
+            fechaFin: { $gte: now }, // La fecha de fin debe ser mayor o igual a la fecha actual
+        });
   
-      if (!activeReservation) {
-        return res.status(404).json({ message: 'No hay reservaciones activas para esta sala.' });
-      }
+        if (!activeReservation) {
+            return res.status(200).json({ message: 'No hay reservaciones activas para esta sala.' });
+        }
   
-      return res.status(200).json(activeReservation);
+        return res.status(200).json(activeReservation);
     } catch (error) {
-      console.error('Error al obtener la reservación activa:', error);
-      return res.status(500).json({ message: 'Hubo un error al obtener la reservación activa.' });
+        console.error('Error al obtener la reservación activa:', error);
+        return res.status(500).json({ message: 'Hubo un error al obtener la reservación activa.' });
     }
-  };
+};
+
+  
   

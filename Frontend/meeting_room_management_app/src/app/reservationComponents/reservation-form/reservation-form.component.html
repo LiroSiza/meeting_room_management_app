@@ -1,0 +1,15 @@
+<form (submit)="handleFormSubmit(); $event.preventDefault()">
+  <div>
+    <label for="user">Usuario:</label>
+    <input id="user" type="text" [(ngModel)]="user" name="user" required />
+  </div>
+  <div>
+    <label for="start-time">Hora de inicio:</label>
+    <input id="start-time" type="datetime-local" [(ngModel)]="startTime" name="startTime" required />
+  </div>
+  <div>
+    <label for="end-time">Hora de fin:</label>
+    <input id="end-time" type="datetime-local" [(ngModel)]="endTime" name="endTime" required />
+  </div>
+  <button type="submit">Reservar</button>
+</form>

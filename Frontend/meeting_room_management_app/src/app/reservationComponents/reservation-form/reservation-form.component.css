@@ -1,0 +1,89 @@
+.title {
+    font-size: 1.8rem;
+    color: #1e88e5;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 25px;
+    background: #f3f4f6;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    font-family: 'Arial', sans-serif;
+    margin-bottom: 30px; /* Agregado para crear un espacio entre el formulario y las reservas */
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #0d47a1;
+  }
+  
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+  }
+  
+  .input-field:focus {
+    outline: none;
+    border-color: #42a5f5;
+    box-shadow: 0 0 5px #42a5f5;
+  }
+  
+  .submit-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:disabled {
+    background-color: #c0c0c0;
+    cursor: not-allowed;
+  }
+  
+  .submit-btn:hover:not(:disabled) {
+    background-color: #1565c0;
+  }
+  
+  .next-reservations {
+    margin-top: 30px;
+    background-color: #e1f5fe;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .next-reservations h4 {
+    font-size: 1.3rem;
+    color: #1565c0;
+  }
+  
+  .reservation-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .reservation-list li {
+    margin-bottom: 10px;
+    font-size: 1rem;
+    color: #0d47a1;
+  }
+  

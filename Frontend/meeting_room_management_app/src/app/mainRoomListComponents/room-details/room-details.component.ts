@@ -5,11 +5,13 @@ import { ReservationService } from '../../services/reservationService/reservatio
 import { Reservation } from '../../interfaces/reservation';
 import { CommonModule, DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
+import { ReservationFormComponent } from '../../reservationComponents/reservation-form/reservation-form.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-room-details',
   standalone: true,
-  imports: [CommonModule, DatePipe],
+  imports: [CommonModule, DatePipe, ReservationFormComponent],
   templateUrl: './room-details.component.html',
   styleUrl: './room-details.component.css'
 })
@@ -23,7 +25,8 @@ export class RoomDetailsComponent implements OnInit {
 
   constructor(
     private roomService: RoomService,
-    private reservationService: ReservationService
+    private reservationService: ReservationService,
+    private router: Router // Inyecta el router
   ) {}
 
   ngOnInit(): void {
@@ -56,7 +59,7 @@ export class RoomDetailsComponent implements OnInit {
       next: (reservation) => {
         this.reservation = reservation; // Aquí se almacena la reservación activa
         this.isPopupVisible = true; // Mostrar el popup después de un retraso
-        
+        //console.log("Reservacion ",this.reservation);
         /*setTimeout(() => {
           this.isPopupVisible = true; 
         }, 0); // Retraso demilisegundos*/
@@ -68,8 +71,14 @@ export class RoomDetailsComponent implements OnInit {
   }
 
   reserveRoom(): void {
-    console.log('Reservar la sala:', this.roomId);
-    // Implementar la lógica de reserva
+    if (!this.room) {
+      console.error('No hay información de la sala.');
+      return;
+    }
+    // Cerrar el popup antes de navegar
+    this.isPopupVisible = false;
+    // Navegar al componente de reservas pasando el roomId en la URL
+    this.router.navigate(['/room', this.room._id]);
   }
 
   cancelReservation(): void {
@@ -82,7 +91,7 @@ export class RoomDetailsComponent implements OnInit {
     const updatedRoom: Room = {
       ...this.room, // Copiar todos los datos actuales de la sala
       estado: 'disponible', // Cambiar el estado a "disponible"
-      id: this.roomId,
+      id: this.room._id,
     };
   
     // Mostrar confirmación usando SweetAlert2
@@ -108,8 +117,31 @@ export class RoomDetailsComponent implements OnInit {
             console.error('Error al cancelar la reservación:', error.message);
           },
         });
-      }
+
+          // Verificar que exista un ID en la reserva antes de actualizar
+          if (this.reservation?._id) {
+            const updatedReservation = {
+              ...this.reservation,
+              estado: 'inactivo', // Cambiar el estado de la reserva a inactivo
+            };
+
+            // Llamar al servicio para actualizar la reservación
+            this.reservationService.updateReservation(this.reservation._id, updatedReservation).subscribe({
+              next: (updatedReservationResponse) => {
+                this.reservation = updatedReservationResponse; // Actualizar la información de la reserva en el frontend
+                console.log('Reservación cancelada (estado cambiado a inactivo).');
+              },
+              error: (error) => {
+                console.error('Error al cancelar la reservación:', error.message);
+              },
+            });
+          } else {
+            console.error('No se encontró un ID válido para la reservación.');
+          }
+        }
     });
+    // Cerrar el popup antes de navegar
+    this.isPopupVisible = false;
   }
   
 

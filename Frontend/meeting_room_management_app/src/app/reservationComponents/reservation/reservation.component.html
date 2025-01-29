@@ -1,0 +1,17 @@
+<div class="reservation-container">
+  <button (click)="returnToRoomList()">Regresar</button>
+
+  <h2>Reservar Sala: {{ room?.nombre }}</h2>
+
+  <app-reservation-form 
+    [roomId]="roomId" 
+    (submitReservation)="handleSubmitReservation($event)">
+  </app-reservation-form>
+
+  <h3>Reservas existentes</h3>
+  <ul>
+    <li *ngFor="let reservation of reservations">
+      {{ reservation.fechaInicio | date:'short' }} - {{ reservation.fechaFin | date:'short' }}
+    </li>
+  </ul>
+</div>
