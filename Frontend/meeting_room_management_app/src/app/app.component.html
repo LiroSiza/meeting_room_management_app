@@ -1,10 +1,9 @@
-
-<main class="main">
-  <div class="content">
-    <div class="left-side">
-      <app-rooms-list-reservations></app-rooms-list-reservations>
-    </div>
-  </div>
-</main>
-
-<router-outlet />
+<nav class="navbar">
+    <ul>
+      <li><a routerLink="/reservasiones" routerLinkActive="active">Reservasiones</a></li>
+      <li><a routerLink="/salas" routerLinkActive="active">Salas</a></li>
+      <li><a routerLink="/reservas" routerLinkActive="active">Reservas</a></li>
+    </ul>
+</nav>
+  
+<router-outlet></router-outlet>
