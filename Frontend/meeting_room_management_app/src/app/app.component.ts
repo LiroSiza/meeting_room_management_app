@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterModule, RouterOutlet } from '@angular/router';
 import { RoomListComponent } from './roomComponents/room-list/room-list.component';
 import { ReservationListComponent } from './reservationComponents/reservation-list/reservation-list.component';
 import { DatePipe } from '@angular/common';
@@ -10,7 +10,7 @@ import { RoomsListReservationsComponent } from './mainRoomListComponents/rooms-l
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomListComponent, ReservationListComponent, RoomCreationFormComponent, RoomsListReservationsComponent, DatePipe, FormsModule],
+  imports: [RouterOutlet, RouterModule, RoomListComponent, ReservationListComponent, RoomCreationFormComponent, RoomsListReservationsComponent, DatePipe, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
