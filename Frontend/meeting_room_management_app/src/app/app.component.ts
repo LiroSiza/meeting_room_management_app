@@ -5,11 +5,12 @@ import { ReservationListComponent } from './reservationComponents/reservation-li
 import { DatePipe } from '@angular/common';
 import { RoomCreationFormComponent } from './roomComponents/room-creation-form/room-creation-form.component';
 import { FormsModule } from '@angular/forms';
+import { RoomsListReservationsComponent } from './mainRoomListComponents/rooms-list-reservations/rooms-list-reservations.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RoomListComponent, ReservationListComponent, RoomCreationFormComponent, DatePipe, FormsModule],
+  imports: [RouterOutlet, RoomListComponent, ReservationListComponent, RoomCreationFormComponent, RoomsListReservationsComponent, DatePipe, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

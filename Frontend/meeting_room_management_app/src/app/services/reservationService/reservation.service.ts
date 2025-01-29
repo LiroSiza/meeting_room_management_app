@@ -12,12 +12,51 @@ import { format } from 'date-fns-tz';
 export class ReservationService {
 
   private socket: Socket;
+  private reservations: Reservation[] = []; // Para almacenar las reservaciones obtenidas
 
   constructor(private http: HttpClient) {
     this.socket = io('http://localhost:3001'); // Conexion al servidor WebSocket
+    this.updateReservationsPeriodically();  // Inicia el proceso de actualización periódica
   }
 
   private urlAPI: string = "http://localhost:3001/api/reservation";
+
+  // Método para obtener las reservaciones filtradas (inactivas eliminadas)
+  getFilteredReservations(): Reservation[] {
+    return this.reservations.filter(reservation => reservation.estado !== 'inactivo');
+  }
+
+  // Método para actualizar las reservaciones periódicamente
+  private updateReservationsPeriodically(): void {
+    setInterval(() => {
+      this.getReservations().subscribe(reservations => {
+        this.reservations = reservations;
+        this.updateRoomStates();  // Actualiza el estado de las salas
+        //console.log("Actualizado", reservations);
+      });
+    }, 6000);  // Actualiza 
+  }
+
+  // Método para actualizar el estado de las salas
+  private updateRoomStates(): void {
+    const currentDate = new Date();  // Hora actual
+    
+    this.reservations.forEach(reservation => {
+      const reservationStart = new Date(reservation.fechaInicio);
+      const reservationEnd = new Date(reservation.fechaFin);
+
+      if (currentDate >= reservationStart && currentDate <= reservationEnd) {
+        // Si la hora actual está dentro del rango de la reservación, cambiar estado a 'inactiva'
+        reservation.estado = 'inactivo';
+      } else {
+        // Si no, cambiar estado a 'disponible'
+        reservation.estado = 'activo';
+      }
+    });
+
+    // Emitir las actualizaciones al frontend
+    this.socket.emit('reservationsUpdated', this.reservations);
+  }
 
   // Método para obtener la lista de reservacion
   getReservations(): Observable<Reservation[]> {
@@ -28,6 +67,18 @@ export class ReservationService {
       })
     );
   }
+
+  // Método para obtener la reservación activa por el ID de la sala
+  getActiveReservationByRoomId(idSala: string): Observable<Reservation> {
+    const url = `${this.urlAPI}/active/${idSala}`
+    return this.http.get<Reservation>(url).pipe(
+      catchError((error) => {
+        console.error('Error al obtener la reservación activa:', error);
+        return throwError(() => new Error('Error al obtener la reservación activa.'));
+      })
+    );
+  }
+  
 
   // Método para obtener una reservacion por su ID
     getReservationById(reservationId: string): Observable<Reservation> {
@@ -103,7 +154,7 @@ export class ReservationService {
     }
 
     const url = `${this.urlAPI}/deactivate/${roomId}`;
-    console.log('URL para desactivar reservaciones:', url);
+    //console.log('URL para desactivar reservaciones:', url);
 
     return this.http.put(url, {}).pipe(
       catchError((error) => {
@@ -113,6 +164,20 @@ export class ReservationService {
     );
   }
 
+   // Método para crear una nueva reservación
+   createReservation(reservation: Reservation): Observable<Reservation> {
+    return this.http.post<Reservation>(this.urlAPI, reservation).pipe(
+      catchError((error) => {
+        console.error('Error al crear la reservación:', error);
+        return throwError(() => new Error('No se pudo crear la reservación. Inténtalo más tarde.'));
+      })
+    );
+  }
+
+  // Método para actualizar una reservación
+  updateReservation(id: string, updatedReservation: Reservation): Observable<Reservation> {
+    return this.http.put<Reservation>(`${this.urlAPI}/${id}`, updatedReservation);
+  }
 
 
   private convertToMexicoTime(date: Date): Date {

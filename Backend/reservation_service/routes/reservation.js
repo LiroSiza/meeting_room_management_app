@@ -9,5 +9,7 @@ router.post('/', reservationController.createReservation);
 router.put('/:id', reservationController.updateReservation);
 router.delete('/:id', reservationController.deleteReservation);
 router.put('/deactivate/:roomId', reservationController.deactivateReservation);
+router.get('/active/:idSala', reservationController.getActiveReservationByRoomId);
+
 
 module.exports = router;

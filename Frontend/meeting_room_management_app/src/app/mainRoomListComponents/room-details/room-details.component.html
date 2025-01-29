@@ -1,0 +1,27 @@
+<div class="popup" *ngIf="isPopupVisible">
+  <div class="popup-content">
+    <button class="close-btn" (click)="closePopup()">&times;</button>
+    <h2>{{ room?.nombre }}</h2>
+    <p>Capacidad: {{ room?.capacidad }}</p>
+    <p>Estado: <span [attr.data-status]="room?.estado">{{ room?.estado | titlecase }}</span></p>
+  
+    <div *ngIf="room?.estado === 'ocupada'">
+      <h3>Reservación actual:</h3>
+      <p>Usuario: {{ reservation?.usuario }}</p>
+      <p>Hora de inicio: {{ reservation?.fechaInicio | date:'hh:mm a' }}</p>
+      <p>Hora final: {{ reservation?.fechaFin | date:'hh:mm a' }}</p>
+      <div class="btn-container">
+        <button (click)="cancelReservation()" class="btn">Desocupar</button>
+        <button (click)="reserveRoom()" class="btn">Reservar</button>
+      </div>
+    </div>
+  
+    <div *ngIf="room?.estado === 'mantenimiento'">
+      <p class="maintenance-msg">Esta sala está en mantenimiento.</p>
+    </div>
+  
+    <div *ngIf="room?.estado === 'disponible'" style="display: flex; justify-content: center;">
+      <button (click)="reserveRoom()" class="btn">Reservar</button>
+    </div>
+  </div>
+</div>
