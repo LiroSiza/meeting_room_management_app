@@ -1,7 +1,7 @@
 <div class="reservation-container">
-  <button (click)="returnToRoomList()">Regresar</button>
+  <button class="back-btn" (click)="returnToRoomList()">Regresar</button>
 
-  <h2>Reservar Sala: {{ room?.nombre }}</h2>
+  <h2>Sala: {{ room?.nombre }}</h2>
 
   <app-reservation-form 
     [roomId]="roomId" 
@@ -9,9 +9,9 @@
   </app-reservation-form>
 
   <h3>Reservas existentes</h3>
-  <ul>
-    <li *ngFor="let reservation of reservations">
-      {{ reservation.fechaInicio | date:'short' }} - {{ reservation.fechaFin | date:'short' }}
+  <ul class="reservation-list">
+    <li *ngFor="let reservation of reservations" class="reservation-item">
+      📅 {{ reservation.fechaInicio | date:'d MMM' }} . {{ reservation.fechaInicio | date:'h:mm a' }} - {{ reservation.fechaFin | date:'h:mm a' }}
     </li>
   </ul>
 </div>

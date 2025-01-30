@@ -1,114 +1,128 @@
+.room-container {
+  padding: 20px;
+  border-radius: 8px;
+  font-family: 'Roboto', sans-serif;
+}
+
 .title {
-    font-size: 1.5rem;
-    text-align: center;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  .error {
-    color: #d32f2f;
-    text-align: center;
-    margin: 1rem 0;
-  }
-  
-  .room-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 auto;
-    max-width: 1040px;
-  }
-  
-  .room-item {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    margin-bottom: 0.5rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .room-info {
-    display: flex;
-    flex-direction: row;
-    gap: 0.2rem;
-  }
-  
-  .room-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-  
-  .btn {
-    padding: 0.4rem 0.8rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.2s ease;
-  }
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+}
 
-  .status-dot {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-right: 5px;
-  }
-  
-  .status-dot.active {
-    background-color: green;
-  }
-  
-  .status-dot.inactive {
-    background-color: red;
-  }  
-  
-  .edit-btn {
-    background-color: #42a5f5;
-    color: #fff;
-  }
-  
-  .edit-btn:hover {
-    background-color: #1e88e5;
-  }
-  
-  .delete-btn {
-    background-color: #ef5350;
-    color: #fff;
-  }
-  
-  .delete-btn:hover {
-    background-color: #d32f2f;
-  }
-  
-  .no-rooms {
-    text-align: center;
-    color: #777;
-    font-style: italic;
-    margin-top: 1rem;
-  }
+.error-message {
+  color: #f44336;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: 500;
+}
 
-  .no-select {
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Standard syntax */
-  }
-  
-  .span-info-txt{
-    width: 160px;
-  }
+.room-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
 
-  .span-info-num{
-    width: 130px;
-    text-align: center;
-  }
+.room-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #fff;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease-in-out;
+}
 
-  .center-txt{
-    text-align: center;
-  }
+.room-item ::selection {
+  background-color: rgb(145, 116, 2);
+  color: #ffffff;
+}
 
-  .inactive {
-    background-color: rgb(224, 224, 224);
-  }
+.room-item:hover {
+  background-color: #f1f1f1;
+}
+
+.room-item.header {
+  font-weight: bold;
+  color: #333;
+  background-color: #f1f1f1;
+}
+
+.room-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.info-text {
+  flex: 1;
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.status-dot.active {
+  background-color: #4caf50;
+}
+
+.status-dot.inactive {
+  background-color: #f44336;
+}
+
+.room-actions {
+  text-align: center;
+  flex: 0 0 150px;
+}
+
+.room-actions button {
+  background-color: rgb(145, 116, 2);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.room-actions button:hover {
+  background-color: rgb(109, 87, 1);
+}
+
+.no-rooms {
+  color: #777;
+  font-size: 1.2rem;
+  text-align: center;
+  margin-top: 30px;
+  font-style: italic;
+}
+
+.inactive {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.no-select {
+  user-select: none;
+}

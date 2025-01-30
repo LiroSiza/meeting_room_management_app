@@ -55,19 +55,19 @@ export class RoomsListReservationsComponent implements OnInit {
 
   private updateRoomStates(reservations: Reservation[]): void {
     const currentDate = new Date(); // Obtener la fecha actual
-  
+    
     // Crear un conjunto de IDs de salas con reservas activas
     const activeRoomIds = new Set(
       reservations.filter(reservation => reservation.estado === 'activo').map(reservation => reservation.idSala)
     );
-  
+    
     // Iterar sobre todas las salas para actualizar sus estados
     this.rooms.forEach(room => {
       if (!room._id) {
         console.warn(`La sala "${room.nombre}" no tiene un ID válido.`);
         return; // Saltar a la siguiente sala si _id es undefined
       }
-  
+    
       if (activeRoomIds.has(room._id)) {
         // Si la sala tiene una reserva activa, verificar su estado
         const activeReservation = reservations.find(
@@ -76,10 +76,17 @@ export class RoomsListReservationsComponent implements OnInit {
         if (activeReservation) {
           const reservationStart = new Date(activeReservation.fechaInicio);
           const reservationEnd = new Date(activeReservation.fechaFin);
-
+  
+          // Verificar si la reserva ha terminado y si la diferencia de tiempo es menor a 30 segundos
+          const timeDifference = reservationEnd.getTime() - currentDate.getTime();
           if (currentDate > reservationEnd) {
             // La reserva ha expirado, marcar la sala como disponible
             room.estado = 'disponible';
+            this.updateRoomStatus(room._id, 'disponible');
+          } else if (timeDifference < 30000) { // Si la diferencia es menor de 30 segundos
+            // Si está cerca de expirar (menos de 30 segundos), desactivar la reserva
+            this.deactivateReservation(activeReservation);
+            room.estado = 'disponible';  // Cambiar estado de la sala a disponible
             this.updateRoomStatus(room._id, 'disponible');
           } else if (currentDate >= reservationStart && currentDate < reservationEnd) {
             // La reserva sigue activa, marcar la sala como ocupada
@@ -96,6 +103,25 @@ export class RoomsListReservationsComponent implements OnInit {
       }
     });
   }
+  
+  // Método auxiliar para desactivar la reserva
+  private deactivateReservation(reservation: Reservation): void {
+    if (reservation._id) { // Verificar que el _id no sea undefined
+      reservation.estado = 'inactivo';  // Cambiar el estado de la reserva a inactivo
+      this.reservationService.updateReservation(reservation._id, reservation).subscribe({
+        next: () => {
+          console.log(`Reserva ${reservation._id} desactivada`);
+        },
+        error: (error) => {
+          console.error(`Error al desactivar la reserva ${reservation._id}:`, error);
+        }
+      });
+    } else {
+      console.error('El ID de la reserva es inválido');
+    }
+  }
+  
+  
   
   // Método auxiliar para actualizar el estado de una sala en el backend
   private updateRoomStatus(roomId: string, status: string): void {

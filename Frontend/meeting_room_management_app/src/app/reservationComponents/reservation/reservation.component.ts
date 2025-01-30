@@ -48,10 +48,11 @@ export class ReservationComponent implements OnInit {
   loadAllReservations(): void {
     this.reservationService.getReservations().subscribe((reservations) => {
       // Filtrar las reservas que pertenecen a la sala con roomId y que están activas
-      this.reservations = reservations.filter(
-        reservation => reservation.idSala === this.roomId && reservation.estado === 'activo'
-      );
+      this.reservations = reservations
+      .filter(reservation => reservation.idSala === this.roomId && reservation.estado === 'activo')
+      .sort((a, b) => new Date(a.fechaInicio).getTime() - new Date(b.fechaInicio).getTime());
     });
+    console.log("RES", this.reservations);
   }
 
   private startAutoCheckReservations(): void {
@@ -77,14 +78,14 @@ export class ReservationComponent implements OnInit {
   }
 
   handleSubmitReservation(data: { startTime: Date; endTime: Date }): void {
-    if (!this.validateReservation(data.startTime, data.endTime)) {
+    /*if (!this.validateReservation(data.startTime, data.endTime)) {
       Swal.fire('Error', 'Los horarios seleccionados traslapan con una reserva existente.', 'error');
       return;
-    }
+    }*/
 
-    Swal.fire('Éxito', 'La reserva no tiene conflictos y puede proceder.', 'success');
+    //Swal.fire('Éxito', 'La reserva no tiene conflictos y puede proceder.', 'success');
     // agregar lógica para enviar los datos al backend
-    console.log('Reserva enviada:', data);
+    //console.log('Reserva enviada:', data);
 
     
   }

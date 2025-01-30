@@ -52,9 +52,9 @@ export class ReservationFormComponent implements OnInit {
   loadAllReservations(): void {
     this.reservationService.getReservations().subscribe((reservations) => {
       // Filtrar las reservas que pertenecen a la sala con roomId y que están activas
-      this.reservations = reservations.filter(
-        reservation => reservation.idSala === this.roomId && reservation.estado === 'activo'
-      );
+      this.reservations = reservations
+      .filter(reservation => reservation.idSala === this.roomId && reservation.estado === 'activo')
+      .sort((a, b) => new Date(a.fechaInicio).getTime() - new Date(b.fechaInicio).getTime());
     });
   }
 
@@ -129,7 +129,7 @@ export class ReservationFormComponent implements OnInit {
       next: (createdReservation) => {
         console.log('Reserva creada exitosamente:');
         Swal.fire('Éxito', 'La reserva ha sido creada con éxito.', 'success');
-
+        this.loadAllReservations(); // Para actualizar la lista despues de reservar y no duplicar reservas
         this.submitReservation.emit({ startTime: startDate, endTime: endDate });
       },
       error: (err) => {
