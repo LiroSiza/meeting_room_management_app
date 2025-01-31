@@ -85,8 +85,21 @@ export class ReservationListComponent implements OnInit{
   }
 
   private sort(): void {
-    // Asegúrate de convertir las fechas ISO (string) a Date y luego ordena
-    this.reservations.sort((a, b) => new Date(b.fechaInicio).getTime() - new Date(a.fechaInicio).getTime());
+    // Ordenar primero por fecha (más reciente primero) y luego por estado ("activo" primero)
+    this.reservations.sort((a, b) => {
+      // Luego ordenamos por estado: "activo" antes que "inactivo"
+      if (a.estado === 'activo' && b.estado !== 'activo') return -1;
+      if (a.estado !== 'activo' && b.estado === 'activo') return 1;
+      // Primero ordenamos por fecha de creación (más reciente primero)
+      const dateComparison = b.fechaInicio - a.fechaInicio;
+      if (dateComparison !== 0) return dateComparison;
+
+      // Luego ordenamos por estado: "activo" antes que "inactivo"
+      if (a.estado === 'activo' && b.estado !== 'activo') return -1;
+      if (a.estado !== 'activo' && b.estado === 'activo') return 1;
+      
+      return 0;
+    });
   }
 
   // Método para eliminar una reservacion por ID

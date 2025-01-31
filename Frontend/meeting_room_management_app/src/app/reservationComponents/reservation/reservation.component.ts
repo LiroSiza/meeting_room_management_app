@@ -52,7 +52,6 @@ export class ReservationComponent implements OnInit {
       .filter(reservation => reservation.idSala === this.roomId && reservation.estado === 'activo')
       .sort((a, b) => new Date(a.fechaInicio).getTime() - new Date(b.fechaInicio).getTime());
     });
-    console.log("RES", this.reservations);
   }
 
   private startAutoCheckReservations(): void {
@@ -86,11 +85,12 @@ export class ReservationComponent implements OnInit {
     //Swal.fire('Éxito', 'La reserva no tiene conflictos y puede proceder.', 'success');
     // agregar lógica para enviar los datos al backend
     //console.log('Reserva enviada:', data);
-
+    clearInterval(this.intervalId);
     
   }
 
   returnToRoomList(): void {
     window.history.back(); // Regresar a la lista de salas
+    clearInterval(this.intervalId);
   }
 }

@@ -9,10 +9,10 @@
 <div>
   
   <ul class="room-list">
-    <li class="room-item">
+    <li class="room-item header">
       <div class="room-info room-info-ti">
         <span class="span-info-txt center-txt">Nombre</span>
-        <span class="span-info-num center-txt">Capacidad</span>
+        <span class="span-ti-info center-txt">Capacidad</span>
         <span class="span-info-txt center-txt">Estado</span>
       </div>
       <div class="room-actions center-txt room-info-ti">
@@ -21,14 +21,14 @@
     </li>
   </ul>
   <ul *ngIf="!error && rooms.length > 0" class="room-list">
-    <li *ngFor="let room of rooms" class="room-item">
+    <li *ngFor="let room of rooms" class="room-item" [ngStyle]="{ 'background-color': getBackgroundColor(room.estado) }">
       <div class="room-info">
-        <span class="span-info-txt">{{ room.nombre }}</span>
-        <span class="span-info-num">{{ room.capacidad }}</span>
+        <span class="span-info-txt center-txt">{{ room.nombre }}</span>
+        <span class="span-info-numn center-txt">{{ room.capacidad }}</span>
         <span class="span-info-txt center-txt">{{ room.estado }}</span>
       </div>
       <div class="room-actions center-txt">
-        <button (click)="editRoom(room._id)" class="btn edit-btn" [disabled]="room.estado === 'ocupada'" [ngClass]="{'btn-disabled': room.estado === 'ocupada'}">Editar</button>
+        <button (click)="editRoom(room._id)" class="btn edit-btn" [disabled]="room.estado === 'ocupada'" [ngClass]="{'btn-disabled': getStatus(room.estado)}">Editar</button>
         <button (click)="deleteRoom(room._id)" class="btn delete-btn" [disabled]="room.estado === 'ocupada'" [ngClass]="{'btn-disabled': room.estado === 'ocupada'}">Borrar</button>
       </div>
     </li>

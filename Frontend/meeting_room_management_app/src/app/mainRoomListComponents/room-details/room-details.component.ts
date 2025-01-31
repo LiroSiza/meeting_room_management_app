@@ -129,7 +129,7 @@ export class RoomDetailsComponent implements OnInit {
             this.reservationService.updateReservation(this.reservation._id, updatedReservation).subscribe({
               next: (updatedReservationResponse) => {
                 this.reservation = updatedReservationResponse; // Actualizar la información de la reserva en el frontend
-                console.log('Reservación cancelada (estado cambiado a inactivo).');
+                console.log('Reservación cancelada (estado cambiado a inactivo).', this.reservation);
               },
               error: (error) => {
                 console.error('Error al cancelar la reservación:', error.message);
@@ -141,7 +141,7 @@ export class RoomDetailsComponent implements OnInit {
         }
     });
     // Cerrar el popup antes de navegar
-    this.isPopupVisible = false;
+    this.closePopup();
   }
   
 

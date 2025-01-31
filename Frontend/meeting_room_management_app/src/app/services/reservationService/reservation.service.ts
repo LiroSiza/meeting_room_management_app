@@ -123,7 +123,7 @@ export class ReservationService {
         const mexicoReservationEnd = this.convertToMexicoTime(reservationEnd);
   
         // Verificar si la reserva está en curso
-        if (mexicoCurrentDate >= mexicoReservationStart && mexicoCurrentDate <= mexicoReservationEnd) {
+        if (mexicoCurrentDate >= mexicoReservationStart && mexicoCurrentDate <= mexicoReservationEnd && reservation.estado !== "inactivo") {
           // Si la reservación está en curso, mostrar un SweetAlert y detener la eliminación
           Swal.fire({
             icon: 'warning',

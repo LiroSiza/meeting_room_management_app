@@ -47,7 +47,7 @@ export class RoomListComponent implements OnInit{
     this.roomService.listenToRoomUpdates().subscribe({ // Se suscribe al observable devuelto por `listenToRoomUpdates` del servicio `RoomService`
       next: (updatedRooms) => {
         this.rooms = updatedRooms; // se actualiza la propiedad `rooms`
-        // console.log('Salas actualizadas:', this.rooms);
+         //console.log('Salas actualizadas:', this.rooms);
       }
     });
   }
@@ -112,6 +112,32 @@ export class RoomListComponent implements OnInit{
   
       // Pasamos el objeto con el campo id
       this.roomUpdateForm.openModal(roomForUpdate);
+    }
+  }
+
+  getStatus(estado: string): any{
+    switch (estado) {
+      case 'disponible':
+        return 'false';
+      case 'ocupada':
+        return 'true';
+      case 'mantenimiento':
+        return 'true';
+      default:
+        return 'false';
+    }
+  }
+
+  getBackgroundColor(estado: string): string {
+    switch (estado) {
+      case 'disponible':
+        return '#d4edda';
+      case 'ocupada':
+        return '#f8d7da';
+      case 'mantenimiento':
+        return '#fff3cd';
+      default:
+        return '#f9f9f9';
     }
   }
   
